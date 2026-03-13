@@ -1,6 +1,9 @@
-class AniLibria {
+const AbstractSource = require("./abstract")
+
+class AniLibria extends AbstractSource {
 
   constructor() {
+    super()
     this.name = "AniLibria"
     this.base = "https://api.anilibria.tv/v3"
   }
@@ -8,9 +11,9 @@ class AniLibria {
   async searchAnime(query) {
 
     const title =
-      query.titles?.romaji ||
-      query.titles?.english ||
-      query.titles?.native
+      query?.titles?.romaji ||
+      query?.titles?.english ||
+      query?.titles?.native
 
     if (!title) return []
 
@@ -20,7 +23,7 @@ class AniLibria {
 
     const data = await res.json()
 
-    if (!data.list?.length) return []
+    if (!data?.list?.length) return []
 
     const anime = data.list[0]
 
@@ -29,8 +32,9 @@ class AniLibria {
     return torrents.map(t => ({
       title: `${anime.names.ru} ${t.quality}`,
       magnet: t.magnet,
-      seeders: t.seeders || 0,
-      size: t.size || 0
+      seeders: t.seeders ?? 0,
+      size: t.size ?? 0,
+      source: this.name
     }))
   }
 
