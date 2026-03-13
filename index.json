@@ -1,13 +1,8 @@
-{
-  "name": "Russian Sources",
-  "description": "Russian anime sources for Shiru",
-  "manifestVersion": 1,
-  "sources": [
-    {
-      "name": "AniLibria",
-      "id": "anilibria",
-      "file": "extensions/sources/anilibria.js",
-      "version": "1.0.0"
-    }
-  ]
-}
+[
+  {
+    "name": "AniLibria",
+    "version": "1.0.0",
+    "description": "AniLibria Russian anime source",
+    "entry": "extensions/sources/anilibria.js"
+  }
+]
