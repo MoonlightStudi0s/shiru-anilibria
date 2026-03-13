@@ -8,6 +8,10 @@ class AniLibria extends AbstractSource {
     this.base = "https://api.anilibria.tv/v3"
   }
 
+  async validate() {
+    return true
+  }
+
   async searchAnime(query) {
 
     const title =

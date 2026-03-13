@@ -4,6 +4,10 @@ class AbstractSource {
     this.name = "Abstract"
   }
 
+  async validate() {
+    return true
+  }
+
   async searchAnime() {
     return []
   }
