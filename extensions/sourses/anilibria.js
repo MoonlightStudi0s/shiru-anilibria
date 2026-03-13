@@ -1,20 +1,16 @@
-import AbstractSource from "./abstract.js"
-
-export default class AniLibria extends AbstractSource {
+class AniLibria {
 
   constructor() {
-    super()
-
     this.name = "AniLibria"
     this.base = "https://api.anilibria.tv/v3"
   }
 
-  async search(options) {
+  async searchAnime(query) {
 
     const title =
-      options?.titles?.romaji ||
-      options?.titles?.english ||
-      options?.titles?.native
+      query.titles?.romaji ||
+      query.titles?.english ||
+      query.titles?.native
 
     if (!title) return []
 
@@ -24,27 +20,20 @@ export default class AniLibria extends AbstractSource {
 
     const data = await res.json()
 
-    if (!data?.list?.length) return []
+    if (!data.list?.length) return []
 
     const anime = data.list[0]
 
     const torrents = anime?.torrents?.list || []
 
-    const results = []
-
-    for (const t of torrents) {
-
-      results.push({
-        title: `${anime.names.ru} ${t.quality}`,
-        magnet: t.magnet,
-        seeders: t.seeders ?? 0,
-        size: t.size ?? 0,
-        resolution: t.quality,
-        source: this.name
-      })
-
-    }
-
-    return results
+    return torrents.map(t => ({
+      title: `${anime.names.ru} ${t.quality}`,
+      magnet: t.magnet,
+      seeders: t.seeders || 0,
+      size: t.size || 0
+    }))
   }
+
 }
+
+module.exports = AniLibria
