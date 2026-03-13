@@ -43,8 +43,8 @@ class AniLibria extends AbstractSource {
         source: this.name
       }))
 
-    } catch (err) {
-      console.error("AniLibria API error:", err)
+    } catch (e) {
+      console.error(e)
       return []
     }
 
