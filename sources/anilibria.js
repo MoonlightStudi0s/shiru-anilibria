@@ -21,27 +21,35 @@ class AniLibria extends AbstractSource {
 
     if (!title) return []
 
-    const res = await fetch(
-      `${this.base}/title/search?search=${encodeURIComponent(title)}`
-    )
+    try {
 
-    const data = await res.json()
+      const res = await fetch(
+        `${this.base}/title/search?search=${encodeURIComponent(title)}`
+      )
 
-    if (!data?.list?.length) return []
+      const data = await res.json()
 
-    const anime = data.list[0]
+      if (!data?.list?.length) return []
 
-    const torrents = anime?.torrents?.list || []
+      const anime = data.list[0]
 
-    return torrents.map(t => ({
-      title: `${anime.names.ru} ${t.quality}`,
-      magnet: t.magnet,
-      seeders: t.seeders ?? 0,
-      size: t.size ?? 0,
-      source: this.name
-    }))
+      const torrents = anime?.torrents?.list || []
+
+      return torrents.map(t => ({
+        title: `${anime.names?.ru || title} ${t.quality}`,
+        magnet: t.magnet,
+        seeders: t.seeders ?? 0,
+        size: t.size ?? 0,
+        source: this.name
+      }))
+
+    } catch (err) {
+      console.error("AniLibria API error:", err)
+      return []
+    }
+
   }
 
 }
 
-module.exports = AniLibria
+module.exports = new AniLibria()
