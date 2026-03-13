@@ -2,7 +2,7 @@
   "sources": [
     {
       "name": "AniLibria",
-      "file": "sources/anilibria.js"
+      "file": "extensions/sources/anilibria.js"
     }
   ]
 }
