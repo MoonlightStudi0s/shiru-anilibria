@@ -1,0 +1,8 @@
+{
+  "sources": [
+    {
+      "name": "AniLibria",
+      "file": "sources/anilibria.js"
+    }
+  ]
+}
