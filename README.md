@@ -6,7 +6,7 @@ Russian anime source for Shiru.
 
 Add repository:
 
-gh:YOUR_USERNAME/shiru-anilibria
+gh:MoonlightStudi0s/shiru-anilibria
 
 ## Features
 

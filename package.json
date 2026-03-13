@@ -1,5 +1,8 @@
 {
-  "name": "shiru-anilibria-extension",
+  "name": "shiru-anilibria",
   "version": "1.0.0",
-  "type": "module"
+  "description": "Shiru Extensions Provided by the Community",
+  "license": "GPLv3",
+  "main": "index.json",
+  "types": "index.d.ts"
 }
