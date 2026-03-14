@@ -1,4 +1,22 @@
-import AbstractSource from './abstract.js'
+class AbstractSource {
+
+  async single(options) {
+    return []
+  }
+
+  async batch(options) {
+    return []
+  }
+
+  async movie(options) {
+    return []
+  }
+
+  async validate() {
+    return true
+  }
+
+}
 
 export default new class AnilibriaSource extends AbstractSource {
 
@@ -30,7 +48,7 @@ export default new class AnilibriaSource extends AbstractSource {
       for (const t of anime.torrents.list || []) {
 
         results.push({
-          title: anime.names.ru,
+          title: anime.names?.ru || title,
           link: t.magnet,
           seeders: t.seeders || 0,
           leechers: t.leechers || 0,
@@ -52,7 +70,7 @@ export default new class AnilibriaSource extends AbstractSource {
     return this.single(options)
   }
 
-  async movie(options) {
+  async movie() {
     return []
   }
 
