@@ -1,0 +1,18 @@
+[
+  {
+    "id": "anilibria",
+    "name": "Shiru-Anilibria",
+    "version": "1.0.0",
+    "main": "sources/anilibria",
+    "type": "torrent",
+    "speed": "fast",
+    "accuracy": "high",
+    "nsfw": true,
+    "regions": [
+      "RU"
+    ],
+    "description": "Shiru extension for AniLibria",
+    "icon": "https://avatars.mds.yandex.net/i?id=3d050806ebe26f7ccf0554859db7f41a_l-7089948-images-thumbs&n=136&exp=1",
+    "update": "gh:MoonlightStudi0s/shiru-anilibria"
+  }
+]
