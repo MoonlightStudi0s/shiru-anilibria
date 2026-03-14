@@ -1,55 +1,59 @@
-const AbstractSource = require("./abstract")
+import AbstractSource from './abstract.js'
 
-class AniLibria extends AbstractSource {
+export default new class AnilibriaSource extends AbstractSource {
 
-  constructor() {
-    super()
-    this.name = "AniLibria"
-    this.base = "https://api.anilibria.tv/v3"
-  }
+  url = "https://api.anilibria.tv/v3"
 
   async validate() {
-    return true
+    try {
+      const r = await fetch(this.url + "/title/search?search=test")
+      return r.ok
+    } catch {
+      return false
+    }
   }
 
-  async searchAnime(query) {
+  async single(options) {
 
-    const title =
-      query?.titles?.romaji ||
-      query?.titles?.english ||
-      query?.titles?.native
-
+    const title = options.titles?.[0]
     if (!title) return []
 
-    try {
+    const r = await fetch(`${this.url}/title/search?search=${encodeURIComponent(title)}`)
+    const data = await r.json()
 
-      const res = await fetch(
-        `${this.base}/title/search?search=${encodeURIComponent(title)}`
-      )
+    const results = []
 
-      const data = await res.json()
+    for (const anime of data.list || []) {
 
-      if (!data?.list?.length) return []
+      if (!anime.torrents) continue
 
-      const anime = data.list[0]
+      for (const t of anime.torrents.list || []) {
 
-      const torrents = anime?.torrents?.list || []
+        results.push({
+          title: anime.names.ru,
+          link: t.magnet,
+          seeders: t.seeders || 0,
+          leechers: t.leechers || 0,
+          downloads: t.downloads || 0,
+          hash: t.hash || crypto.randomUUID(),
+          size: t.size || 0,
+          date: new Date(),
+          type: "best"
+        })
 
-      return torrents.map(t => ({
-        title: `${anime.names?.ru || title} ${t.quality}`,
-        magnet: t.magnet,
-        seeders: t.seeders ?? 0,
-        size: t.size ?? 0,
-        source: this.name
-      }))
+      }
 
-    } catch (e) {
-      console.error(e)
-      return []
     }
 
+    return results
   }
 
-}
+  async batch(options) {
+    return this.single(options)
+  }
 
-module.exports = new AniLibria()
+  async movie(options) {
+    return []
+  }
+
+}()

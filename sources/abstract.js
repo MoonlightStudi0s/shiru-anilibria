@@ -1,17 +1,19 @@
-class AbstractSource {
+export default class AbstractSource {
 
-  constructor() {
-    this.name = "Abstract"
+  async single(options) {
+    return []
+  }
+
+  async batch(options) {
+    return []
+  }
+
+  async movie(options) {
+    return []
   }
 
   async validate() {
     return true
   }
 
-  async searchAnime() {
-    return []
-  }
-
 }
-
-module.exports = AbstractSource
