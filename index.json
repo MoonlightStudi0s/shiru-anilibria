@@ -3,7 +3,7 @@
     "id": "anilibria",
     "name": "Shiru-Anilibria",
     "version": "1.0.0",
-    "main": "gh:MoonlightStudi0s/shiru-anilibria/sources/anilibria.js",
+    "main": "sources/anilibria.js",
     "type": "torrent",
     "speed": "fast",
     "accuracy": "high",
