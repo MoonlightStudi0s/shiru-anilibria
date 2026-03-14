@@ -23,12 +23,7 @@ export default new class AnilibriaSource extends AbstractSource {
   url = "https://api.anilibria.tv/v3"
 
   async validate() {
-    try {
-      const r = await fetch(this.url + "/title/search?search=test")
-      return r.ok
-    } catch {
-      return false
-    }
+    return true
   }
 
   async single(options) {
@@ -36,34 +31,41 @@ export default new class AnilibriaSource extends AbstractSource {
     const title = options.titles?.[0]
     if (!title) return []
 
-    const r = await fetch(`${this.url}/title/search?search=${encodeURIComponent(title)}`)
-    const data = await r.json()
+    try {
 
-    const results = []
+      const r = await fetch(`${this.url}/title/search?search=${encodeURIComponent(title)}`)
+      const data = await r.json()
 
-    for (const anime of data.list || []) {
+      const results = []
 
-      if (!anime.torrents) continue
+      for (const anime of data.list || []) {
 
-      for (const t of anime.torrents.list || []) {
+        if (!anime.torrents) continue
 
-        results.push({
-          title: anime.names?.ru || title,
-          link: t.magnet,
-          seeders: t.seeders || 0,
-          leechers: t.leechers || 0,
-          downloads: t.downloads || 0,
-          hash: t.hash || crypto.randomUUID(),
-          size: t.size || 0,
-          date: new Date(),
-          type: "best"
-        })
+        for (const t of anime.torrents.list || []) {
+
+          results.push({
+            title: anime.names?.ru || title,
+            link: t.magnet,
+            seeders: t.seeders || 0,
+            leechers: t.leechers || 0,
+            downloads: t.downloads || 0,
+            hash: t.hash || crypto.randomUUID(),
+            size: t.size || 0,
+            date: new Date(),
+            type: "best"
+          })
+
+        }
 
       }
 
+      return results
+
+    } catch {
+      return []
     }
 
-    return results
   }
 
   async batch(options) {
