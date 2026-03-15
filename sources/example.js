@@ -15,19 +15,30 @@ export default new class ExampleSource extends AbstractSource {
 
     try {
 
-      const r = await fetch(`${this.url}/anime/releases/search?query=${encodeURIComponent(title)}`)
-      const data = await r.json()
+      // 1. ищем релиз
+      const search = await fetch(
+        `${this.url}/app/search/releases?q=${encodeURIComponent(title)}`
+      )
+
+      const searchData = await search.json()
 
       const results = []
 
-      for (const anime of data.data || []) {
+      for (const release of searchData.data || []) {
 
-        if (!anime.torrents) continue
+        const releaseId = release.id
 
-        for (const torrent of anime.torrents) {
+        // 2. получаем торренты релиза
+        const torrentsReq = await fetch(
+          `${this.url}/anime/torrents/release/${releaseId}`
+        )
+
+        const torrentsData = await torrentsReq.json()
+
+        for (const torrent of torrentsData.data || []) {
 
           results.push({
-            title: anime.name?.main || title,
+            title: release.name?.main || title,
             link: torrent.magnet,
             seeders: torrent.seeders || 0,
             leechers: torrent.leechers || 0,
