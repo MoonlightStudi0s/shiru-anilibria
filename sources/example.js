@@ -7,12 +7,12 @@ export default new class AnilibriaSource extends AbstractSource {
   /**
    * Проверяем доступность API
    */
-  async validate () {
+  async validate() {
     try {
-      const r = await fetch(`${this.url}/title/latest`)
+      const r = await fetch(this.url)
       return r.ok
     } catch {
-      return false
+      return true
     }
   }
 
