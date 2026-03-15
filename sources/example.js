@@ -1,51 +1,62 @@
 import AbstractSource from './abstract.js'
 
-export default new class ExampleSource extends AbstractSource {
+export default new class AnilibriaSource extends AbstractSource {
 
   url = 'https://anilibria.top/api/v1'
 
   async validate() {
-    return true
+    try {
+      const res = await fetch(`${this.url}/app/status`)
+      return res.ok
+    } catch {
+      return false
+    }
   }
 
-  async #search(query) {
+  async search(query) {
 
-    const title = query.titles?.[0]
+    const title = query?.titles?.[0]
     if (!title) return []
 
     try {
 
-      // 1. ищем релиз
-      const search = await fetch(
-        `${this.url}/app/search/releases?q=${encodeURIComponent(title)}`
+      const searchReq = await fetch(
+        `${this.url}/app/search/releases?query=${encodeURIComponent(title)}`,
+        {
+          headers: {
+            "User-Agent": "Mozilla/5.0"
+          }
+        }
       )
 
-      const searchData = await search.json()
+      const releases = await searchReq.json()
 
       const results = []
 
-      for (const release of searchData.data || []) {
+      for (const release of releases) {
 
-        const releaseId = release.id
-
-        // 2. получаем торренты релиза
         const torrentsReq = await fetch(
-          `${this.url}/anime/torrents/release/${releaseId}`
+          `${this.url}/anime/torrents/release/${release.id}`,
+          {
+            headers: {
+              "User-Agent": "Mozilla/5.0"
+            }
+          }
         )
 
-        const torrentsData = await torrentsReq.json()
+        const torrents = await torrentsReq.json()
 
-        for (const torrent of torrentsData.data || []) {
+        for (const torrent of torrents) {
 
           results.push({
-            title: release.name?.main || title,
+            title: torrent.label || release.name.main,
             link: torrent.magnet,
             seeders: torrent.seeders || 0,
             leechers: torrent.leechers || 0,
-            downloads: torrent.downloads || 0,
-            hash: torrent.hash || Math.random().toString(36).slice(2),
-            size: torrent.size || 0,
-            date: new Date(torrent.created_at || Date.now()),
+            downloads: torrent.completed_times || 0,
+            hash: torrent.hash,
+            size: torrent.size,
+            date: new Date(torrent.created_at),
             accuracy: 'high',
             type: 'best'
           })
@@ -56,22 +67,23 @@ export default new class ExampleSource extends AbstractSource {
 
       return results
 
-    } catch {
+    } catch (err) {
+      console.log(err)
       return []
     }
 
   }
 
   async single(query) {
-    return this.#search(query)
+    return this.search(query)
   }
 
   async batch(query) {
-    return this.#search(query)
+    return this.search(query)
   }
 
   async movie(query) {
-    return this.#search(query)
+    return this.search(query)
   }
 
 }()
