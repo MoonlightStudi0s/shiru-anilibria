@@ -12,5 +12,5 @@
 4. В поле вставь:
 
 ```
-gh:MoonlightStudi0s/shiru-anilibria-test
+gh:MoonlightStudi0s/shiru-anilibria
 ```
