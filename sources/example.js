@@ -4,21 +4,8 @@ export default new class AnilibriaSource extends AbstractSource {
 
   url = 'https://api.anilibria.tv/v3'
 
-  /**
-   * Проверяем доступность API
-   */
-  async validate() {
-    try {
-      const r = await fetch(this.url)
-      return r.ok
-    } catch {
-      return true
-    }
-  }
+  validate = Promise.resolve(true)
 
-  /**
-   * Общий метод поиска
-   */
   async #search(query) {
 
     const title = query.titles?.[0]
@@ -62,23 +49,14 @@ export default new class AnilibriaSource extends AbstractSource {
 
   }
 
-  /**
-   * Поиск одиночной серии
-   */
   async single(query) {
     return this.#search(query)
   }
 
-  /**
-   * Поиск batch
-   */
   async batch(query) {
     return this.#search(query)
   }
 
-  /**
-   * Поиск фильма
-   */
   async movie(query) {
     return this.#search(query)
   }
