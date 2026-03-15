@@ -2,7 +2,7 @@ import AbstractSource from './abstract.js'
 
 export default new class ExampleSource extends AbstractSource {
 
-  url = 'https://api.anilibria.tv/v3'
+  url = 'https://anilibria.top/api/v1'
 
   async validate() {
     return true
@@ -15,26 +15,26 @@ export default new class ExampleSource extends AbstractSource {
 
     try {
 
-      const r = await fetch(`${this.url}/title/search?search=${encodeURIComponent(title)}`)
+      const r = await fetch(`${this.url}/anime/releases/search?query=${encodeURIComponent(title)}`)
       const data = await r.json()
 
       const results = []
 
-      for (const anime of data.list || []) {
+      for (const anime of data.data || []) {
 
         if (!anime.torrents) continue
 
-        for (const t of anime.torrents.list || []) {
+        for (const torrent of anime.torrents) {
 
           results.push({
-            title: anime.names?.ru || anime.names?.en || title,
-            link: t.magnet,
-            seeders: t.seeders || 0,
-            leechers: t.leechers || 0,
-            downloads: t.downloads || 0,
-            hash: t.hash || Math.random().toString(36).slice(2),
-            size: t.size || 0,
-            date: new Date(),
+            title: anime.name?.main || title,
+            link: torrent.magnet,
+            seeders: torrent.seeders || 0,
+            leechers: torrent.leechers || 0,
+            downloads: torrent.downloads || 0,
+            hash: torrent.hash || Math.random().toString(36).slice(2),
+            size: torrent.size || 0,
+            date: new Date(torrent.created_at || Date.now()),
             accuracy: 'high',
             type: 'best'
           })
