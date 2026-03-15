@@ -1,0 +1,8 @@
+{
+  "name": "shiru-anilibria-test",
+  "version": "1.0.0",
+  "description": "Test exstention",
+  "license": "GPLv3",
+  "main": "index.json",
+  "types": "sources/index.d.ts"
+}

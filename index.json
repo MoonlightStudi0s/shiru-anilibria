@@ -1,0 +1,17 @@
+[
+  {
+    "id": "example",
+    "name": "Anilibria test",
+    "version": "0.0.1",
+    "main": "sources/example",
+    "update": "gh:MoonlightStudi0s/shiru-anilibria-test",
+    "type": "torrent",
+    "speed": "fast",
+    "accuracy": "low",
+    "regions": [
+      "RU"
+    ],
+    "description": "Test exstention.",
+    "icon": "https://avatars.mds.yandex.net/i?id=3d050806ebe26f7ccf0554859db7f41a_l-7089948-images-thumbs&n=136&exp=1"
+  }
+]

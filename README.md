@@ -1,1 +1,0 @@
-# shiru-anilibria-test
