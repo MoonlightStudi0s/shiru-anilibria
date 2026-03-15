@@ -1,10 +1,12 @@
 import AbstractSource from './abstract.js'
 
-export default new class AnilibriaSource extends AbstractSource {
+export default new class ExampleSource extends AbstractSource {
 
   url = 'https://api.anilibria.tv/v3'
 
-  validate = Promise.resolve(true)
+  async validate() {
+    return true
+  }
 
   async #search(query) {
 
@@ -30,7 +32,7 @@ export default new class AnilibriaSource extends AbstractSource {
             seeders: t.seeders || 0,
             leechers: t.leechers || 0,
             downloads: t.downloads || 0,
-            hash: t.hash || crypto.randomUUID(),
+            hash: t.hash || Math.random().toString(36).slice(2),
             size: t.size || 0,
             date: new Date(),
             accuracy: 'high',
